@@ -2,9 +2,21 @@
   include_once('../../utils/head.php');
   
   /** 获取地址列表 */
-  $router->get(function($req, $res, $db) {
-    $list = $db->select("SELECT * FROM address");
-    $res->send(200, '获取成功', array("list"=> $list));
+  $router->get(function($req, $res, $db, $util) {
+    $params = $req['params'];
+
+    if($util->isSetParams($params, ['weixinId'])['flag']) {
+      $list = $db->select("SELECT * FROM address WHERE weixinId = '$params[weixinId]'");
+
+      if($list) {
+        $res->send(200, '获取地址列表成功', array("list"=> $list));
+      } else {
+        $res->send(200, '无地址信息', []);
+      }
+    } else {
+      $res->send(400, '获取地址列表失败');
+    }
+    
   });
 
   /** 新增地址 */
@@ -12,13 +24,12 @@
     $params = $req['params'];
     $default = false;
 
-    /** 如果该用户没有地址，则设该地址为默认地址 */
-    if($db->count('address', 'WHERE int_id = 1') === 0) {
-      $default = true;
-    }
-
     /** 判断信息是否完整 */
-    if($util->isSetParams($params, ['name', 'phone', 'province', 'city', 'county', 'detail'])['flag']) {
+    if($util->isSetParams($params, ['weixinId', 'name', 'phone', 'province', 'city', 'county', 'detail'])['flag']) {
+      /** 如果该用户没有地址，则设该地址为默认地址 */
+      if($db->count('address', "WHERE weixinId = '$params[weixinId]'") === 0) {
+        $default = true;
+      }
 
       if($util->checkPhone($params['phone'])) {
         $params['bool_default'] = $default;
@@ -45,13 +56,14 @@
 
   /** 更新地址信息 */
   $router->put(function($req, $res, $db, $util) {
+    // echo var_dump($req['params']);
     $params = $req['params'];
-    $paramsMsg = $util->isSetParams($params, ['bool_defalut', 'int_id', 'weixinId']);
+    $paramsMsg = $util->isSetParams($params, ['weixinId', 'int_id']);
 
     if($paramsMsg['flag']) {
       /** 设置为默认地址 */
-      $cancelResult = $db->update('address', array("bool_default"=> 0), "WHERE weixinId = $params[weixinId] AND bool_default = 1");
-      $updateResult = $db->update('address', $params, "WHERE weixinId = $params[weixinId]");
+      $cancelResult = $db->update('address', array("bool_default"=> 0), "WHERE weixinId = '$params[weixinId]' AND bool_default = 1");
+      $updateResult = $db->update('address', array("bool_default"=> 1), "WHERE weixinId = '$params[weixinId]' AND int_id = $params[int_id]");
       
       if($cancelResult && $updateResult) {
         $res->send(200, '设置默认地址成功', []);
@@ -94,7 +106,7 @@
   /** 删除地址 */
   $router->delete(function($req, $res, $db, $util) {
     $params = $req['params'];
-    $paramsMsg = $util->isSetParams($params, ['int_id', 'bool_default']);
+    $paramsMsg = $util->isSetParams($params, ['weixinId', 'int_id', 'bool_default']);
 
     if($paramsMsg['flag']) {
       
@@ -102,7 +114,7 @@
         /** 如果删除的是默认地址，则寻找是否还有其他地址，设ID最小的为默认地址 */
       } else {
         /** 如果删除的不是默认地址，则直接删除 */
-        $result = $db->delete('address', "WHERE int_id = $params[int_id]");
+        $result = $db->delete('address', "WHERE weixinId = '$params[weixinId]' AND int_id = $params[int_id]");
 
         if($result) {
           $res->send(200, "删除地址成功");

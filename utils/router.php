@@ -62,8 +62,10 @@
 
     function put($fn) {
       if($_SERVER['REQUEST_METHOD'] === 'PUT') {
+        $params = json_decode(file_get_contents('php://input'), true);
+        
         $req = array(
-          "params"=> $_REQUEST
+          "params"=> $params
         );
         $res = new Response();
         $db = new Database();

@@ -1,26 +1,23 @@
 # BabyShop Api说明
 
-## 目录
+## 请求说明
 
-## 说明
-
-- GET
+### GET
 ```javascript
 wx.fetch({
   url: 'addresses',
   data: {
-    weixinId: {{weixinId}}
+
   }
 })
 ```
 
-- POST
+### POST
 ```javascript
 wx.fetch({
   url: 'addresses',
   method: 'POST',
   data: {
-    weixinId: {{weixinId}},
     name: {{name}},
     phone: {{phone}},
     province: {{province}},
@@ -30,14 +27,19 @@ wx.fetch({
 })
 ```
 
-- DELETE
+### DELETE
 ```javascript
 wx.fetch({
   url: 'addresses',
   method: 'DELETE',
-  params: `weixinId=${weixinId}&int_id=${id}&bool_defalut=${default}`
+  data: {
+    int_id: {{int_id}},
+    bool_default: {{bool_default}}
+  }
 })
 ```
+
+
 ## 接口
 
 ### 1. 地址
@@ -90,7 +92,7 @@ wx.fetch({
 | 参数名 | 必须 | 类型 | 说明 |
 | :--------: | :----:| :--: | :--: |
 | weixinId | 是 | string | 微信openid |
-| int_id | 是 | string | 地址ID |
+| int_id | 是 | int | 地址ID |
 
 #### 1.5 删除地址
 - URL: addresses
@@ -100,5 +102,5 @@ wx.fetch({
 | 参数名 | 必须 | 类型 | 说明 |
 | :--------: | :----:| :--: | :--: |
 | weixinId | 是 | string | 微信openid |
-| int_id | 是 | string | 地址ID |
-| bool_default | 是 | string | 是否为默认地址 |
+| int_id | 是 | int | 地址ID |
+| bool_default | 是 | bool | 是否为默认地址 |

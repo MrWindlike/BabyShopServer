@@ -91,7 +91,7 @@
 
     /** 更新 */
     function update($table, $params, $condition) {
-      $db->connect();
+      $this->connect();
       $SQL = "UPDATE $table SET ";
       
       foreach ($params as $key => $value) {
@@ -99,18 +99,17 @@
           $SQL .= "$key = '$value', ";
         } else if(is_bool($value)) {
           $SQL .= "$key = ".intval($value).", ";
-        }else {
+        } else {
           $SQL .= "$key = $value, ";
         }
       }
       $SQL = substr($SQL, 0, strlen($SQL) - 2);
       $SQL .= " $condition";
-      // $result = mysqli_query($this->db, $SQL);
+      $result = mysqli_query($this->db, $SQL);
 
-      $db-close();
+      $this->close();
 
-      echo $SQL;
-      // return $result;
+      return $result;
     }
 
     /** 删除 */
@@ -126,8 +125,12 @@
     /** 统计 */
     function count($table, $condition) {
       $this->connect();
+      $count = 0;
       $result = mysqli_query($this->db, "SELECT * FROM $table $condition");
-      $count = mysqli_num_rows($result);
+      if($result) {
+        $count = mysqli_num_rows($result);
+      }
+      
       $this->close();
 
       return $count;
