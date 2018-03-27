@@ -1,9 +1,11 @@
 <?php
   include_once 'database.php';
   include_once 'response.php';
+  include_once 'util.php';
 
   class Router {
     function get($fn) {
+
       if($_SERVER['REQUEST_METHOD'] === 'GET') {
         $req = array(
           "params"=> $_GET
@@ -19,8 +21,10 @@
     function post($fn) {
 
       if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $params = json_decode(file_get_contents('php://input'), true);
+
         $req = array(
-          "params"=> $_POST
+          "params"=> $params
         );
         $res = new Response();
         $db = new Database();
@@ -31,6 +35,7 @@
     }
 
     function delete($fn) {
+
       if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         $params = [];
         foreach ($_GET as $key => $value) {
@@ -62,6 +67,7 @@
     }
 
     function put($fn) {
+
       if($_SERVER['REQUEST_METHOD'] === 'PUT') {
         $params = json_decode(file_get_contents('php://input'), true);
         

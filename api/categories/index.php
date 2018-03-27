@@ -58,7 +58,7 @@
   });
 
   $router->delete(function($req, $res, $db, $util) {
-    $params = req['params'];
+    $params = $req['params'];
     $setParamsMsg = $util->isSetParams($params, ['int_id']);
 
     if($setParamsMsg['flag']) {
