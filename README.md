@@ -126,6 +126,22 @@ wx.fetch({
 | :--------: | :----:| :--: | :--: |
 | page | 否 | int | 当前页数 |
 | pageSize | 否 | int | 每页条数 |
+- RETURN:
+```javascript
+{
+  code: 200,
+  data: {
+    list: [
+      {
+        name: '奶粉',
+        property: '重量,品牌',
+      }
+    ],
+    total: 1
+  },
+  msg: '获取分类列表成功'
+}
+```
 
 #### 2.3 删除分类
 - URL: categories
