@@ -26,22 +26,25 @@
       $list = [];
       $index = 0;
 
-      while ($result = mysqli_fetch_assoc($results)){
-        foreach ($result as $key => $value) {
-          /** 处理数据类型 */
-          if(strstr($key, 'int_')) {
-            $list[$index][substr($key, 4)] = intval($value);
-          } else if(strstr($key, 'bool_')) {
-            $list[$index][substr($key, 5)] = boolval($value);
-          } else if(strstr($key, 'float_')) {
-            $list[$index][substr($key, 6)] = floatval($value);
-          }else {
-            $list[$index][$key] = $value;
+      if($results) {
+        while ($result = mysqli_fetch_assoc($results)){
+          foreach ($result as $key => $value) {
+            /** 处理数据类型 */
+            if(strstr($key, 'int_')) {
+              $list[$index][substr($key, 4)] = intval($value);
+            } else if(strstr($key, 'bool_')) {
+              $list[$index][substr($key, 5)] = boolval($value);
+            } else if(strstr($key, 'float_')) {
+              $list[$index][substr($key, 6)] = floatval($value);
+            }else {
+              $list[$index][$key] = $value;
+            }
           }
+  
+          $index++;
         }
-
-        $index++;
       }
+      
 
       $this->close();
 
