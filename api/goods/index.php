@@ -68,7 +68,7 @@
     /** 获取商品分类列表 */
     $hasCategoryMsg = $util->isSetParams($params, ['int_categoryId']);
     if($hasCategoryMsg['flag']) {
-      $params['bool_recomment'] = intval($params['bool_recomment']);
+      $params['int_categoryId'] = intval($params['int_categoryId']);
       $data = $db->select("SELECT int_id, name, float_price, preview, int_categoryId FROM good WHERE int_categoryId = $params[int_categoryId]");
 
       if($data) {
@@ -81,10 +81,19 @@
     }
 
     /** 获取商品列表 */
-    $data = $db->select("SELECT int_id, name, float_price, preview, int_categoryId FROM good");
+    $page = $params['page'] ? $params['page'] : 1;
+    $pageSize = $params['pageSize'];
+    
+    if($pageSize) {
+      $start = intval($pageSize) * (intval($page) - 1);
+      $data = $db->select("SELECT int_id, name, float_price, preview, int_categoryId FROM good LIMIT $start, $pageSize");
+    } else {
+      $data = $db->select("SELECT int_id, name, float_price, preview, int_categoryId FROM good");
+    }
+    $total = $db->count('goods', '');
 
     if($data) {
-      $res->send(200, '获取商品列表成功', array("list"=> $data));
+      $res->send(200, '获取商品列表成功', array("list"=> $data, "total"=> $total));
       return ;
     } else {
       $res->send(400, '无商品列表');

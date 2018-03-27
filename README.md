@@ -132,6 +132,7 @@ wx.fetch({
   data: {
     list: [
       {
+        id: 1,
         name: '奶粉',
         property: '重量,品牌',
       }
@@ -149,4 +150,33 @@ wx.fetch({
 
 | 参数名 | 必须 | 类型 | 说明 |
 | :--------: | :----:| :--: | :--: |
-| int_id | 否 | int | 分类id |
+| int_id | 是 | int | 分类id |
+
+### 3. 商品
+
+#### 3.1 获取热门商品列表
+- URL: goods
+- METHOD: GET
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| bool_hot | 是 | string | 只需传1 |
+
+#### 3.2 获取推荐商品列表
+- URL: goods
+- METHOD: GET
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| bool_recomment | 是 | string | 只需传1 |
+
+#### 3.3 获取分类商品列表
+- URL: goods
+- METHOD: GET
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| int_categoryId | 是 | string | 分类ID |

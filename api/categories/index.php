@@ -22,11 +22,11 @@
     $params = $req['params'];
 
     /** 获取分类列表 */
-    $page = $params['page'] || 1;
+    $page = $params['page'] ? $params['page'] : 1;
     $pageSize = $params['pageSize'];
     
     if($pageSize) {
-      $start = $pageSize * ($page - 1);
+      $start = intval($pageSize) * (intval($page) - 1);
       $data = $db->select("SELECT * FROM category LIMIT $start, $pageSize");
     } else {
       $data = $db->select("SELECT * FROM category");
