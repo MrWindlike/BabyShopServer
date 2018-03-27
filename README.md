@@ -104,3 +104,34 @@ wx.fetch({
 | weixinId | 是 | string | 微信openid |
 | int_id | 是 | int | 地址ID |
 | bool_default | 是 | bool | 是否为默认地址 |
+
+### 2. 分类
+
+#### 2.1 添加分类
+- URL: categories
+- METHOD: POST
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| name | 是 | string | 分类名 |
+| property | 是 | string | 属性。如：'重量,品牌' |
+
+#### 2.2 获取分类列表
+- URL: categories
+- METHOD: GET
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| page | 否 | int | 当前页数 |
+| pageSize | 否 | int | 每页条数 |
+
+#### 2.3 删除分类
+- URL: categories
+- METHOD: DELETE
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| int_id | 否 | int | 分类id |

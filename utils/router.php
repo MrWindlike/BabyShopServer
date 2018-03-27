@@ -17,6 +17,7 @@
     }
 
     function post($fn) {
+
       if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $req = array(
           "params"=> $_POST
