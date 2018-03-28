@@ -90,7 +90,8 @@
     } else {
       $data = $db->select("SELECT int_id, name, float_price, preview, int_categoryId FROM good");
     }
-    $total = $db->count('goods', '');
+
+    $total = $db->count('good', '');
 
     if($data) {
       $res->send(200, '获取商品列表成功', array("list"=> $data, "total"=> $total));

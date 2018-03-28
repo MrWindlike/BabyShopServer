@@ -180,3 +180,13 @@ wx.fetch({
 | 参数名 | 必须 | 类型 | 说明 |
 | :--------: | :----:| :--: | :--: |
 | int_categoryId | 是 | string | 分类ID |
+
+#### 3.3 获取商品列表
+- URL: goods
+- METHOD: GET
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| page | 否 | string | 页数 |
+| pageSize | 否 | string | 每页条数 |
