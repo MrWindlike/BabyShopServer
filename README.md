@@ -181,7 +181,7 @@ wx.fetch({
 | :--------: | :----:| :--: | :--: |
 | int_categoryId | 是 | string | 分类ID |
 
-#### 3.3 获取商品列表
+#### 3.4 获取商品列表
 - URL: goods
 - METHOD: GET
 - PARAMS:
