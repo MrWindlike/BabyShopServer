@@ -57,6 +57,23 @@
     }
   });
 
+  $router->put(function($req, $res, $db, $util) {
+    $params = $req['params'];
+    $setParamsMsg = $util->isSetParams($params, ['int_id']);
+
+    if($setParamsMsg['flag']) {
+      $result = $db->update('category', $params, "WHERE int_id = $params[int_id]");
+
+      if($result) {
+        $res->send(200, '更新分类信息成功');
+      } else {
+        $res->send(400, '更新分类信息失败');
+      }
+    } else {
+      $res->send(400, "更新分类信息失败，缺少$setParamsMsg[key]参数");
+    }
+  });
+
   $router->delete(function($req, $res, $db, $util) {
     $params = $req['params'];
     $setParamsMsg = $util->isSetParams($params, ['int_id']);

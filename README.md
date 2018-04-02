@@ -152,6 +152,17 @@ wx.fetch({
 | :--------: | :----:| :--: | :--: |
 | int_id | 是 | int | 分类id |
 
+#### 2.4 更新分类
+- URL: categories
+- METHOD: PUT
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| int_id | 是 | int | 分类id |
+| name | 否 | string | 分类名 |
+| property | 否 | string | 属性，字符串。如：'大小，颜色' |
+
 ### 3. 商品
 
 #### 3.1 获取热门商品列表
@@ -190,3 +201,29 @@ wx.fetch({
 | :--------: | :----:| :--: | :--: |
 | page | 否 | string | 页数 |
 | pageSize | 否 | string | 每页条数 |
+
+#### 3.5 获取商品详情
+- URL: goods
+- METHOD: GET
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| int_id | 是 | int | 商品ID |
+
+#### 3.6 更新商品信息
+- URL: goods
+- METHOD: PUT
+- PARAMS:
+
+| 参数名 | 必须 | 类型 | 说明 |
+| :--------: | :----:| :--: | :--: |
+| int_id | 是 | int | 商品ID |
+| name | 否 | int | 名称 |
+| float_price | 否 | float | 价格 |
+| preview | 否 | string | 预览图 |
+| detail | 否 | string | 详情图 |
+| property | 否 | string | 属性。传字符串，如：'300g,红色' |
+| bool_hot | 否 | bool | 是否热卖 |
+| bool_recomment | 否 | bool | 是否推荐 |
+| int_categoryId | 否 | int | 分类ID |

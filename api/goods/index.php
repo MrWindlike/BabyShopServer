@@ -86,9 +86,9 @@
     
     if($pageSize) {
       $start = intval($pageSize) * (intval($page) - 1);
-      $data = $db->select("SELECT int_id, name, float_price, preview, int_categoryId FROM good LIMIT $start, $pageSize");
+      $data = $db->select("SELECT * FROM good LIMIT $start, $pageSize");
     } else {
-      $data = $db->select("SELECT int_id, name, float_price, preview, int_categoryId FROM good");
+      $data = $db->select("SELECT * FROM good");
     }
 
     $total = $db->count('good', '');
@@ -99,6 +99,23 @@
     } else {
       $res->send(400, '无商品列表');
       return ;
+    }
+  });
+
+  $router->put(function($req, $res, $db, $util) {
+    $params = $req['params'];
+    $setParamsMsg = $util->isSetParams($params, ['int_id']);
+
+    if($setParamsMsg['flag']) {
+      $result = $db->update('good', $params, "WHERE int_id = $params[int_id]");
+
+      if($result) {
+        $res->send(200, '更新商品信息成功');
+      } else {
+        $res->send(400, '更新商品信息失败');
+      }
+    } else {
+      $res->send(400, "更新商品信息失败，缺少$setParamsMsg[key]参数");
     }
   });
 ?>
