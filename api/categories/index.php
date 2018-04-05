@@ -2,6 +2,11 @@
   include_once('../../utils/head.php');
 
   $router->post(function($req, $res, $db, $util) {
+    if(!$util->checkAuthorization($db)) {
+      $res->send(403, '请先登陆后在进行操作');
+      return ;
+    }
+    
     $params = $req['params'];
     $setParamsMsg = $util->isSetParams($params, ['name']);
     
@@ -58,6 +63,11 @@
   });
 
   $router->put(function($req, $res, $db, $util) {
+    if(!$util->checkAuthorization($db)) {
+      $res->send(403, '请先登陆后在进行操作');
+      return ;
+    }
+
     $params = $req['params'];
     $setParamsMsg = $util->isSetParams($params, ['int_id']);
 
@@ -75,6 +85,11 @@
   });
 
   $router->delete(function($req, $res, $db, $util) {
+    if(!$util->checkAuthorization($db)) {
+      $res->send(403, '请先登陆后在进行操作');
+      return ;
+    }
+    
     $params = $req['params'];
     $setParamsMsg = $util->isSetParams($params, ['int_id']);
 

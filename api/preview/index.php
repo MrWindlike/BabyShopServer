@@ -2,6 +2,11 @@
   include_once('../../utils/head.php');
 
   $router->post(function($req, $res, $db, $util) {
+    if(!$util->checkAuthorization($db)) {
+      $res->send(403, '请先登陆后在进行操作');
+      return ;
+    }
+    
     $params = $req['params'];
     $previews =  $_FILES['previews'];
 

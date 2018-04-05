@@ -3,7 +3,7 @@
     var $db;
 
     function connect() {
-      $HOSTNAME = "localhost";
+      $HOSTNAME = "127.0.0.1";
       $DATABASE = "BabyShop";
       $USERNAME = "root";
       $PASSWORD = "root";
@@ -25,6 +25,7 @@
       $results = mysqli_query($this->db, $SQL);
       $list = [];
       $index = 0;
+      
 
       if($results) {
         while ($result = mysqli_fetch_assoc($results)){
