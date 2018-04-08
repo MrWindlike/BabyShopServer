@@ -50,7 +50,7 @@
         $res->send(200, '获取商品热门列表成功', array("list"=> $data));
         return ;
       } else {
-        $res->send(400, '无热门列表商品');
+        $res->send(200, '无热门列表商品', array("list"=> [], "total"=> 0));
         return ;
       }
     }
@@ -65,7 +65,7 @@
         $res->send(200, '获取商品推荐列表成功', array("list"=> $data));
         return ;
       } else {
-        $res->send(400, '无推荐列表商品');
+        $res->send(200, '无推荐列表商品', array("list"=> [], "total"=> 0));
         return ;
       }
     }
@@ -80,7 +80,7 @@
         $res->send(200, '获取商品分类列表成功', array("list"=> $data));
         return ;
       } else {
-        $res->send(400, '该分类下无商品');
+        $res->send(200, '该分类下无商品', array("list"=> [], "total"=> 0));
         return ;
       }
     }
@@ -108,7 +108,7 @@
       $res->send(200, '获取商品列表成功', array("list"=> $data, "total"=> $total));
       return ;
     } else {
-      $res->send(400, '无商品列表');
+      $res->send(200, '无商品列表', array("list"=> [], "total"=> 0));
       return ;
     }
   });
