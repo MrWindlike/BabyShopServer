@@ -63,7 +63,7 @@
     function insert($table, $params) {
       $this->connect();
       /** 编写SQL插入语句 */
-      $SQL = "INSERT INTO $table (";
+      $SQL = "INSERT INTO `$table` (";
 
       foreach ($params as $key => $value) {
         $SQL .= "$key, ";

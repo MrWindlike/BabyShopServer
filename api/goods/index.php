@@ -96,6 +96,12 @@
       $data = $db->select("SELECT * FROM good");
     }
 
+    foreach($data as $i => $good) {
+      
+      $categoryName = $db->select("SELECT name FROM category WHERE int_id = $good[categoryId]")[0]['name'];
+      $data[$i]['categoryName'] = $categoryName;
+    }
+
     $total = $db->count('good', '');
 
     if($data) {

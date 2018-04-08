@@ -6,15 +6,18 @@
     $setParamsMsg = $util->isSetParams($params, ['username', 'password']);
 
     if($setParamsMsg['flag']) {
-      $user = $db->select("SELECT int_id FROM admin WHERE username = '$params[username]' AND password = md5('$params[password]')");
+      $user = $db->select("SELECT int_id FROM admin WHERE username = '$params[username]' AND password = md5('$params[password]')")[0];
 
       if($user) {
         $ms = $util->getMs();
         $token = md5("$params[password].$ms");
-        $result = $db->update('admin', ["token"=> $token, "float_time"=> $ms]);
+        $result = $db->update('admin', ["token"=> $token, "float_time"=> $ms], "WHERE int_id = $user[id]");
 
         if($result) {
           $res->send(200, '登陆成功', array("token"=> $token));
+          return ;
+        } else {
+          $res->send(400, '登陆失败');
           return ;
         }
       } else {
