@@ -29,4 +29,24 @@
       $res->send(400, "下订单失败，缺少$setParamsMsg[key]参数");
     }
   });
+
+  $router->get(function($req, $res, $db, $util) {
+    $params = $req['params'];
+    $setParamsMsg = $util->isSetParams($params, ['weixinId']);
+
+    if($setParamsMsg['flag']) {
+      $data = $db->select("SELECT * FROM order WHERE weixinId = '$params[weixinId]'");
+
+      $res->send(200, "获取订单成功", $data);
+      return ;
+    } else {
+      $res->send(400, "获取订单失败，缺少$setParamsMsg[key]参数");
+      return ;
+    }
+
+    if(!$util->checkAuthorization($db)) {
+      $res->send(403, '请先登陆后在进行操作');
+      return ;
+    }
+  });
 ?>
