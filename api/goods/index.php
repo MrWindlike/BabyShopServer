@@ -6,13 +6,11 @@
       $res->send(403, '请先登陆后在进行操作');
       return ;
     }
-
     $params = $req['params'];
     $setParamsMsg = $util->isSetParams($params, ['name', 'float_price', 'preview', 'detail', 'bool_hot', 'bool_recomment', 'int_categoryId']);
 
     if($setParamsMsg['flag']) {
       $result = $db->insert('good', $params);
-
       if($result) {
         $res->send(200, '添加商品成功');
       } else {
@@ -25,7 +23,6 @@
 
   $router->get(function($req, $res, $db, $util) {
     $params = $req['params'];
-
     /** 获取商品详情 */
     $hasIdMsg = $util->isSetParams($params, ['int_id']);
     if($hasIdMsg['flag']) {
@@ -118,7 +115,6 @@
       $res->send(403, '请先登陆后在进行操作');
       return ;
     }
-    
     $params = $req['params'];
     $setParamsMsg = $util->isSetParams($params, ['int_id']);
 
@@ -132,6 +128,27 @@
       }
     } else {
       $res->send(400, "更新商品信息失败，缺少$setParamsMsg[key]参数");
+    }
+  });
+
+  $router->delete(function($req, $res, $db, $util) {
+    if(!$util->checkAuthorization($db)) {
+      $res->send(403, '请先登陆后在进行操作');
+      return ;
+    }
+    $params = $req['params'];
+    $setParamsMsg = $util->isSetParams($params, ['int_id']);
+
+    if($setParamsMsg['flag']) {
+      $result = $db->delete('good', "WHERE int_id = $params[int_id]");
+
+      if($result) {
+        $res->send(200, '删除商品成功');
+      } else {
+        $res->send(400, '删除商品失败');
+      }
+    } else {
+      $res->send(400, "删除商品失败，缺少$setParamsMsg[key]参数");
     }
   });
 ?>
