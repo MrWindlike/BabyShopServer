@@ -1,12 +1,7 @@
 <?php
   include_once('../../utils/head.php');
 
-  $router->post(function($req, $res, $db, $util) {
-    if(!$util->checkAuthorization($db)) {
-      $res->send(403, '请先登陆后在进行操作');
-      return ;
-    }
-    
+  $router->post(function($req, $res, $db, $util) { 
     $params = $req['params'];
     $previews =  $_FILES['details'];
 
@@ -15,7 +10,7 @@
       || ($previews["type"] === "image/png"))
       && ($previews["size"] < 2000000)){
         $fileName = base64_encode(date("y-m-d h:i:s", time()).$previews['name']).".jpg";
-        $result =move_uploaded_file($previews["tmp_name"], "../../upload/details/".$fileName);
+        $result = move_uploaded_file($previews["tmp_name"], "../../upload/details/".$fileName);
 
         if($result) {
           $res->send(200, '上传详情图成功', array("fileName"=> $fileName));

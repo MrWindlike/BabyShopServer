@@ -8,6 +8,7 @@
     }
 
     $params = $req['params'];
+
     $setParamsMsg = $util->isSetParams($params, ['name', 'float_price', 'preview', 'detail', 'bool_hot', 'bool_recomment', 'int_categoryId']);
 
     if($setParamsMsg['flag']) {
