@@ -96,7 +96,7 @@
     /** 更新 */
     function update($table, $params, $condition) {
       $this->connect();
-      $SQL = "UPDATE $table SET ";
+      $SQL = "UPDATE `$table` SET ";
       
       foreach ($params as $key => $value) {
         if(is_string($value)) {
@@ -119,7 +119,7 @@
     /** 删除 */
     function delete($table, $condition) {
       $this->connect();
-      $SQL = "DELETE FROM $table $condition";
+      $SQL = "DELETE FROM `$table` $condition";
       $result = mysqli_query($this->db, $SQL);
       $this->close();
 
