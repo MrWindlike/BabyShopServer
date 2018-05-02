@@ -30,6 +30,8 @@
       $data = $db->select("SELECT * FROM good WHERE int_id = $params[int_id]");
 
       if($data) {
+        $categoryId = $data[0]['categoryId'];
+        $data[0]['categoryProperty'] =  $db->select("SELECT property FROM category WHERE int_id = $categoryId")[0]['property'];
         $res->send(200, '获取商品详情成功', $data[0]);
         return ;
       } else {

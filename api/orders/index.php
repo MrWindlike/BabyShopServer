@@ -3,9 +3,14 @@
 
   $router->post(function($req, $res, $db, $util) {
     $params = $req['params'];
-    $setParamsMsg = $util->isSetParams($params, ['weixinId', 'addressId', 'goodIdList']);
+    $setParamsMsg = $util->isSetParams($params, ['weixinId', 'addressId', 'goodIdList', 'password']);
 
     if($setParamsMsg['flag']) {
+      if($params['password'] != '123456') {
+        $res->send(403, '密码错误');
+        die;
+      }
+
       $order = [];
       $order['weixinId'] = $params['weixinId'];
       $order['int_addressId'] = $params['addressId'];
@@ -63,4 +68,23 @@
 
     $res->send(400, '获取订单失败');
   });
+
+  $router->put(function($req, $res, $db, $util) {
+    $params = req['params'];
+    $setParamsMsg = $util->isSetParams($params, ['int_status', 'orderId']);
+
+    if($setParamsMsg['flag']) {
+      $result = $db->update('order', array("int_status"=> $params['int_status']), "WHERE orderId = '$params[orderId]'");
+
+      if($result) {
+        $res->send(200, '更新订单成功');
+        die;
+      } else {
+        $res->send(400, '更新订单失败');
+        die;
+      }
+    }
+
+    $res->send(400, '更新订单失败');
+});
 ?>
