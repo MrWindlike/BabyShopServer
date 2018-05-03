@@ -3,7 +3,7 @@
 
   $router->post(function($req, $res, $db, $util) {
     $params = $req['params'];
-    $setParamsMsg = $util->isSetParams($params, ['weixinId', 'addressId', 'goodIdList', 'password']);
+    $setParamsMsg = $util->isSetParams($params, ['weixinId', 'addressId', 'goodList', 'password']);
 
     if($setParamsMsg['flag']) {
       if($params['password'] != '123456') {
@@ -18,12 +18,18 @@
       $order['float_time'] = time();
       $order['int_status'] = 0;
 
-      $result = $db->insert('order', $order);
+      foreach($params['goodList'] as $index => $good) {
+        $price = $db->select("SELECT float_price FROM good WHERE int_id = $good[id]")[0]['price'];
 
-      foreach($params['goodIdList'] as $index => $goodId) {
-        $price = $db->select("SELECT float_price FROM good WHERE int_id = $goodId")[0]['price'];
-        $db->insert('commodity', array("orderId"=> $order['id'], "int_goodId"=> $goodId, "float_price"=> $price));
+        if(!$price) {
+          $res->send(400, '所选商品不存在');
+          die;
+        }
+
+        $db->insert('commodity', array("orderId"=> $order['id'], "int_goodId"=> $good['id'], "int_num"=> $good['num'], "float_price"=> $price));
       }
+
+      $result = $db->insert('order', $order);
 
       if($result) {
         $res->send(200, '下订单成功');
@@ -40,9 +46,13 @@
     $setParamsMsg = $util->isSetParams($params, ['weixinId']);
 
     if($setParamsMsg['flag']) {
-      $data = $db->select("SELECT * FROM `order` WHERE weixinId = '$params[weixinId]'");
+      $orders = $db->select("SELECT * FROM `order` WHERE weixinId = '$params[weixinId]'");
 
-      $res->send(200, "获取订单成功", $data);
+      foreach($orders as $index => $order) {
+        $orders[$index]['goodList'] = $db->select("SELECT int_goodId, int_num, float_price FROM `commodity` WHERE orderId = '$order[id]'");
+      }
+
+      $res->send(200, "获取订单成功", array("list"=> $orders));
       return ;
     }
 
@@ -55,11 +65,17 @@
     $pageSize = $params['pageSize'] ? $params['pageSize'] : 8;
     $start = intval($pageSize) * (intval($page) - 1);
 
-    $data = $db->select("SELECT * FROM `order` LIMIT $start, $pageSize");
+    $orders = $db->select("SELECT * FROM `order` LIMIT $start, $pageSize");
+
+    foreach($orders as $index => $order) {
+      $orders[$index]['goodList'] = $db->select("SELECT int_goodId, int_num, float_price FROM `commodity` WHERE orderId = '$order[id]'");
+      $orders[$index]['address'] = $db->select("SELECT * FROM `address` WHERE int_id = $order[addressId]")[0];
+    }
+    
     $total = $db->count('order', '');
 
-    if($data) {
-      $res->send(200, '获取订单成功', array("list"=> $data, "total"=> $total));
+    if($orders) {
+      $res->send(200, '获取订单成功', array("list"=> $orders, "total"=> $total));
       return ;
     } else {
       $res->send(200, '获取订单成功', array("list"=> [], "total"=> 0));

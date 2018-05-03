@@ -130,7 +130,7 @@
     function count($table, $condition) {
       $this->connect();
       $count = 0;
-      $result = mysqli_query($this->db, "SELECT * FROM $table $condition");
+      $result = mysqli_query($this->db, "SELECT * FROM `$table` $condition");
       if($result) {
         $count = mysqli_num_rows($result);
       }
