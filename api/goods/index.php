@@ -86,23 +86,24 @@
     }
 
     /** 获取商品列表 */
+    $search = isSet($params['search']) ? $params['search'] : '';
+    $selectCategory = $params['categoryId'] ? " AND int_categoryId = $params[categoryId] " : '';
     $page = $params['page'] ? $params['page'] : 1;
     $pageSize = $params['pageSize'];
     
     if($pageSize) {
       $start = intval($pageSize) * (intval($page) - 1);
-      $data = $db->select("SELECT * FROM good LIMIT $start, $pageSize");
+      $data = $db->select("SELECT * FROM good WHERE name LIKE '%$search%' $selectCategory ORDER BY int_id LIMIT $start, $pageSize");
     } else {
-      $data = $db->select("SELECT * FROM good");
+      $data = $db->select("SELECT * FROM good WHERE name LIKE '%$search%' $selectCategory ORDER BY int_id");
     }
 
     foreach($data as $i => $good) {
-      
       $categoryName = $db->select("SELECT name FROM category WHERE int_id = $good[categoryId]")[0]['name'];
       $data[$i]['categoryName'] = $categoryName;
     }
 
-    $total = $db->count('good', '');
+    $total = $db->count('good', "WHERE name LIKE '%$search%' $selectCategory");
 
     if($data) {
       $res->send(200, '获取商品列表成功', array("list"=> $data, "total"=> $total));
