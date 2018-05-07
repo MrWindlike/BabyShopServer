@@ -75,7 +75,7 @@
     $pageSize = $params['pageSize'] ? $params['pageSize'] : 8;
     $start = intval($pageSize) * (intval($page) - 1);
 
-    $orders = $db->select("SELECT * FROM `order` LIMIT $start, $pageSize");
+    $orders = $db->select("SELECT * FROM `order` ORDER BY id DESC LIMIT $start, $pageSize");
 
     foreach($orders as $index => $order) {
       $orders[$index]['goodList'] = $db->select("SELECT int_goodId, int_num, float_price FROM `commodity` WHERE orderId = '$order[id]'");

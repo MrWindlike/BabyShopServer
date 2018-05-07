@@ -93,9 +93,9 @@
     
     if($pageSize) {
       $start = intval($pageSize) * (intval($page) - 1);
-      $data = $db->select("SELECT * FROM good WHERE name LIKE '%$search%' $selectCategory ORDER BY int_id LIMIT $start, $pageSize");
+      $data = $db->select("SELECT * FROM good WHERE name LIKE '%$search%' $selectCategory ORDER BY int_id DESC LIMIT $start, $pageSize");
     } else {
-      $data = $db->select("SELECT * FROM good WHERE name LIKE '%$search%' $selectCategory ORDER BY int_id");
+      $data = $db->select("SELECT * FROM good WHERE name LIKE '%$search%' $selectCategory ORDER BY int_id DESC");
     }
 
     foreach($data as $i => $good) {
